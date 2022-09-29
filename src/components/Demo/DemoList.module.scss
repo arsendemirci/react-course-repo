@@ -1,0 +1,17 @@
+.list {
+  ul {
+    list-style-type: none;
+    padding: 0;
+    li {
+      border: 1px solid rgba(128, 128, 128, 0.389);
+      border-radius: 10px;
+      text-align: center;
+      font-size: 18px;
+      padding: 10px 20px;
+      box-shadow: 0 0 6px rgba(128, 128, 128, 0.313);
+      &:not(:last-child) {
+        margin-bottom: 15px;
+      }
+    }
+  }
+}
