@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { Tasks, NewTask } from "@components";
 
 function App() {
