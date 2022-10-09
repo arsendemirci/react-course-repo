@@ -1,10 +1,9 @@
-class Api {
+class FetchApi {
   constructor() {
     this.headers = {
       "Content-Type": "application/json",
     };
-    this.baseUrl =
-      "https://react-http-5b874-default-rtdb.europe-west1.firebasedatabase.app/";
+    this.baseUrl = process.env.REACT_APP_BASE_URL;
   }
   postData(url, data) {
     fetch(this.baseUrl + url, {
@@ -25,7 +24,7 @@ class Api {
     }
   }
 }
-const api = new Api();
-Object.freeze(api);
+const fetchApi = new FetchApi();
+Object.freeze(fetchApi);
 
-export default api;
+export default fetchApi;

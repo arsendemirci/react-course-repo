@@ -1,4 +1,4 @@
-import Api from "../http";
+import Api from "../http/axiosApi";
 
 const MoviesApi = {
   addMovie(movie) {
@@ -7,6 +7,7 @@ const MoviesApi = {
   async getMovies() {
     let loadedMovies = [];
     const data = await Api.getData("movies.json");
+    console.log("data", data);
     for (const key in data) {
       loadedMovies.push({
         id: key,
