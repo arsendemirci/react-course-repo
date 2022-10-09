@@ -10,7 +10,12 @@ class AxiosApi {
   postData(url, data) {
     return this.http.post(`${this.baseUrl}${url}`, data);
   }
-  getData(url) {
-    return this.http.get(`${this.baseUrl}${url}`);
+  async getData(url) {
+    const response = await this.http.get(`${this.baseUrl}${url}`);
+    if (response.statusText == "OK" && response.data) {
+      return response.data;
+    } else {
+      return [];
+    }
   }
 }
