@@ -1,4 +1,4 @@
-import useCounter from "../hooks/useCounter";
+import useCounter from "../../hooks/useCounter";
 import { Card } from "@components";
 
 const BackwardCounter = () => {
