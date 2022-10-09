@@ -1,5 +1,5 @@
 import React from "react";
-import useFetchApi from "./hooks/useFetchApi";
+// import { useFetchApi } from "@hooks";
 
 function App() {
   // const [data] = useFetchApi("movies.json");

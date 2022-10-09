@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import FetchApi from "../api/http/fetchApi";
+import { fetchApi } from "@http";
 
 const useFetchApi = (url, method = "GET") => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    FetchApi.getData(url).then((data) => {
+    fetchApi.getData(url).then((data) => {
       setData(data);
     });
   }, [url, method]);

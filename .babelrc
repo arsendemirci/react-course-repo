@@ -7,7 +7,9 @@
         "alias": {
           "@components": "./src/components/",
           "@icons": "./src/components/UI/Icons",
-          "@constants": "./src/constants"
+          "@constants": "./src/constants",
+          "@hooks": "./src/hooks",
+          "@http": "./src/api/http"
         }
       }
     ]
