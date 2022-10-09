@@ -24,7 +24,5 @@ class FetchApi {
     }
   }
 }
-const FetchApi = new FetchApi();
-Object.freeze(FetchApi);
 
-export default FetchApi;
+export default new FetchApi();
