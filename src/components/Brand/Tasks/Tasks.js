@@ -8,7 +8,7 @@ const Tasks = (props) => {
     taskList = (
       <ul>
         {props.items.map((task) => (
-          <TaskItem key={task.id}>{task.text}</TaskItem>
+          <TaskItem key={task.id}>{task.title}</TaskItem>
         ))}
       </ul>
     );
