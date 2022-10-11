@@ -1,27 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { useAxiosApi } from "@hooks";
+import React, { useEffect, useState } from "react";
+import { Tasks, NewTask } from "@components";
+import { useFetchApi } from "@hooks";
 import { taskApi } from "@services";
 
 function App() {
+  const { isLoading, error, sendRequest: fetchTasks } = useFetchApi();
+
   const [tasks, setTasks] = useState([]);
-  const { isLoading, error, sendRequest: getTasks } = useAxiosApi();
 
   useEffect(() => {
     const loadTasks = (tasks) => {
       setTasks(taskApi.loadTasks(tasks));
     };
-    getTasks({ url: "tasks.json" }, loadTasks);
-  }, [getTasks]);
+    fetchTasks({ url: "tasks.json" }, loadTasks);
+  }, [fetchTasks]);
+
+  const taskAddHandler = (task) => {
+    setTasks((prevTasks) => prevTasks.concat(task));
+  };
+  // console.log("tasks", tasks);
   return (
     <React.Fragment>
-      <div>Welcome To React</div>
-      <ul>
-        {isLoading && <p>Loading Data Please Wait...</p>}
-        {!isLoading && tasks.length
-          ? tasks.map((task) => <li key={task.id}>{task.title}</li>)
-          : null}
-        {!isLoading && error && <p>{error}</p>}
-      </ul>
+      <NewTask onAddTask={taskAddHandler} />
+      <Tasks items={tasks} loading={isLoading} error={error} />
     </React.Fragment>
   );
 }
