@@ -6,7 +6,6 @@ class FetchApi {
     this.baseUrl = process.env.REACT_APP_BASE_URL;
   }
   async postData(url, data) {
-    console.log("postData", data);
     const response = await fetch(this.baseUrl + url, {
       method: "POST",
       body: JSON.stringify(data),

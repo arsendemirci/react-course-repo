@@ -5,7 +5,6 @@ const useFetchApi = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const sendRequest = useCallback(async (config, applyData) => {
-    console.log("config", config);
     const requestConfig = {
       url: config.url,
       method: config.method || "GET",
