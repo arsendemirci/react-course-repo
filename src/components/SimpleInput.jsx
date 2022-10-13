@@ -4,52 +4,75 @@ const SimpleInput = (props) => {
   const isMounted = useRef(false);
   const [validation, setValidation] = useState({
     name: {},
-    surname: {},
+    email: {},
     isValid: null,
     message: "",
   });
   const [enteredName, setEnteredName] = useState("");
-  const [enteredSurname, setEnteredSurname] = useState("");
-  const validateForm = useCallback(() => {
-    let validationObj = {};
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const validateForm = useCallback(
+    (blur) => {
+      let validationObj = {};
+      if (blur) {
+        if (blur === "name") {
+          validationObj.name = {
+            isValid: enteredName !== "",
+            message: "Please Enter a Name",
+          };
+        } else if (blur === "email") {
+          validationObj.email = {
+            isValid:
+              enteredEmail !== "" && ["@", "."].every((x) => enteredEmail.includes(x)),
+            message: "Please Enter Valid Email",
+          };
+        }
+      } else {
+        validationObj.name = {
+          isValid: enteredName !== "",
+          message: "Please Enter a Name",
+        };
+        validationObj.email = {
+          isValid:
+            enteredEmail !== "" && ["@", "."].every((x) => enteredEmail.includes(x)),
+          message: "Please Enter Valid Email",
+        };
+        validationObj.isValid = !Object.values(validationObj).some((x) => !x.isValid);
+        validationObj.message = validationObj.isValid ? "" : "The Form Is Not Valid!";
+      }
 
-    validationObj.name = { isValid: enteredName !== "", message: "Please Enter a Name" };
-    validationObj.surname = {
-      isValid: enteredSurname !== "",
-      message: "Please Enter Surname",
-    };
-
-    validationObj.isValid = !Object.values(validationObj).some((x) => !x.isValid);
-
-    validationObj.message = validationObj.isValid ? "" : "The Form Is Not Valid!";
-
-    setValidation(validationObj);
-  }, [enteredName, enteredSurname]);
-  const nameInputChangeHandler = (event, type) => {
-    console.log("event", event, "param", type);
+      setValidation((prev) => {
+        return { ...prev, ...validationObj };
+      });
+    },
+    [enteredName, enteredEmail]
+  );
+  const inputChangeHandler = (event, type) => {
     if (type === "name") {
       setEnteredName(event.target.value);
-    } else if (type === "surname") {
-      setEnteredSurname(event.target.value);
+    } else if (type === "email") {
+      setEnteredEmail(event.target.value);
     } else {
       return;
     }
+  };
+  const inputBlurHandler = (type) => {
+    validateForm(type);
   };
   const formSubmissinHandler = (event) => {
     event.preventDefault();
     validateForm();
     if (!validation.isValid) return;
-    console.log("Submitted the form", enteredName, enteredSurname);
+    console.log("Submitted the form", enteredName, enteredEmail);
 
     //we change isMounted to false to reset the form and skip the next useEffect
     isMounted.current = false;
     setEnteredName("");
-    setEnteredSurname("");
+    setEnteredEmail("");
   };
   const nameInputClasses =
     validation.name.isValid === false ? "form-control invalid" : "form-control";
-  const surnameInputClasses =
-    validation.surname.isValid === false ? "form-control invalid" : "form-control";
+  const emailInputClasses =
+    validation.email.isValid === false ? "form-control invalid" : "form-control";
   useEffect(() => {
     if (isMounted.current) validateForm();
     else {
@@ -63,23 +86,25 @@ const SimpleInput = (props) => {
         <input
           type="text"
           id="name"
-          onChange={(event) => nameInputChangeHandler(event, "name")}
+          onChange={(event) => inputChangeHandler(event, "name")}
+          onBlur={() => inputBlurHandler("name")}
           value={enteredName}
         />
         {validation.name.isValid === false && (
           <p className="error-text">{validation.name.message}</p>
         )}
       </div>
-      <div className={surnameInputClasses}>
-        <label htmlFor="surname">Your Last Name</label>
+      <div className={emailInputClasses}>
+        <label htmlFor="email">Your Email</label>
         <input
-          id="surname"
+          id="email"
           type="text"
-          onChange={(event) => nameInputChangeHandler(event, "surname")}
-          value={enteredSurname}
+          onChange={(event) => inputChangeHandler(event, "email")}
+          onBlur={() => inputBlurHandler("email")}
+          value={enteredEmail}
         ></input>
-        {validation.surname.isValid === false && (
-          <p className="error-text">{validation.surname.message}</p>
+        {validation.email.isValid === false && (
+          <p className="error-text">{validation.email.message}</p>
         )}
       </div>
       <div className="form-actions">
