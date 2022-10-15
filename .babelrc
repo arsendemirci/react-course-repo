@@ -10,7 +10,8 @@
           "@constants": "./src/constants",
           "@hooks": "./src/hooks",
           "@http": "./src/api/http",
-          "@services": "./src/api/services"
+          "@services": "./src/api/services",
+          "@reducers": "./src/state/reducers"
         }
       }
     ]

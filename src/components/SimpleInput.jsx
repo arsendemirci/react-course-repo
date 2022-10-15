@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInput } from "@hooks";
 
 const SimpleInput = (props) => {
@@ -8,32 +8,39 @@ const SimpleInput = (props) => {
   const [formIsValid, setFormIsValid] = useState(null);
   const {
     value: enteredName,
-    isValid: enteredNameIsValid,
     hasError: nameHasError,
     valueChangeHandler: nameChangeHandler,
     inputBlurHandler: nameBlurHandler,
+    validateValue: validateNameValue,
+    resetInput: resetName,
   } = useInput(validateName);
   const {
     value: enteredEmail,
-    isValid: enteredEmailIsValid,
     hasError: emailHasError,
     valueChangeHandler: emailChangeHandler,
     inputBlurHandler: emailBlurHandler,
+    validateValue: validateEmailValue,
+    resetInput: resetEmail,
   } = useInput(validateEmail);
 
   const formSubmissionHandler = (event) => {
     event.preventDefault();
-
-    if (formIsValid) {
+    let chk1 = validateNameValue();
+    let chk2 = validateEmailValue();
+    // emailBlurHandler();
+    if (chk1 && chk2) {
       console.log("form has been submittted", enteredName, enteredEmail);
+      resetName();
+      resetEmail();
     } else {
       setFormIsValid(false);
     }
   };
   useEffect(() => {
-    if (isMounted.current) setFormIsValid(enteredNameIsValid && enteredEmailIsValid);
+    if (isMounted.current) setFormIsValid(!emailHasError && !nameHasError);
     else isMounted.current = true;
-  }, [enteredNameIsValid, enteredEmailIsValid]);
+  }, [emailHasError, nameHasError]);
+
   const nameInputClasses = nameHasError ? "form-control invalid" : "form-control";
   const emailInputClasses = emailHasError ? "form-control invalid" : "form-control";
 

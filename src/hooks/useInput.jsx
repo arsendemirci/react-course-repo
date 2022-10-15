@@ -1,24 +1,39 @@
-import { useState } from "react";
-const useInput = (validate) => {
-  const [enteredValue, setEnteredValue] = useState("");
-  const [isTouched, setIsTouched] = useState(false);
+import { useReducer } from "react";
+import { inputStateReducer } from "@reducers";
 
-  const valueIsValid = validate(enteredValue);
-  const hasError = !valueIsValid && isTouched;
+const useInput = (validate) => {
+  const [state, dispatch] = useReducer(inputStateReducer, {
+    value: "",
+    isValid: false,
+    isTouched: false,
+  });
+
+  const validateValue = () => {
+    const isItValid = validate(state.value);
+    dispatch({ type: "VALIDATE", valid: isItValid });
+    return isItValid;
+  };
+  const valueIsValid = validate(state.value);
+  const hasError = !valueIsValid && state.isTouched;
 
   const valueChangeHandler = (event) => {
-    setEnteredValue(event.target.value);
+    dispatch({ type: "CHANGE", value: event.target.value });
   };
   const inputBlurHandler = (event) => {
-    setIsTouched(true);
+    dispatch({ type: "BLUR" });
+  };
+  const resetInput = () => {
+    dispatch({ type: "RESET" });
   };
 
+  console.log("custom hook start", { ...state });
   return {
-    value: enteredValue,
-    isValid: valueIsValid,
+    value: state.value,
     hasError,
     valueChangeHandler,
     inputBlurHandler,
+    validateValue,
+    resetInput,
   };
 };
 export default useInput;
