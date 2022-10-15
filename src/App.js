@@ -1,28 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { useAxiosApi } from "@hooks";
-import { taskApi } from "@services";
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
-  const [tasks, setTasks] = useState([]);
-  const { isLoading, error, sendRequest: getTasks } = useAxiosApi();
-
-  useEffect(() => {
-    const loadTasks = (tasks) => {
-      setTasks(taskApi.loadTasks(tasks));
-    };
-    getTasks({ url: "tasks.json" }, loadTasks);
-  }, [getTasks]);
   return (
-    <React.Fragment>
-      <div>Welcome To React</div>
-      <ul>
-        {isLoading && <p>Loading Data Please Wait...</p>}
-        {!isLoading && tasks.length
-          ? tasks.map((task) => <li key={task.id}>{task.title}</li>)
-          : null}
-        {!isLoading && error && <p>{error}</p>}
-      </ul>
-    </React.Fragment>
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>Welcome! This the base project for the react course</p>
+
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
   );
 }
 

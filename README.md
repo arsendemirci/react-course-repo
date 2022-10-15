@@ -1,70 +1,163 @@
-# Getting Started with Create React App
+### :eyes: Overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The purpose of the project is to serve as a base for all the exercise and assignments during the whole react course.
+There will be different sections for different subjects and projects for each section will be in the corresponding branch derived from the master branch. Details about each section will be in its branch
 
-## Available Scripts
+There will be common features and basic functionalities generically implemented here that many react applications can utilize.
 
-In the project directory, you can run:
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), and rewired with [React-App-Rewired](https://www.npmjs.com/package/react-app-rewired)
+Modules are configured with [customize-cra](https://www.npmjs.com/package/customize-cra) and **.babelrc** and **config-ovverrides.js** files are added to ovverride webpack configuration.
 
-### `npm start`
+### :rocket: Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+run **npm install** in the terminal after cloning the repository.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### :scroll: Table of Contents
 
-### `npm test`
+- [:eyes: Overview](#eyes-overview)
+- [:scroll: Table of Contents](#scroll-table-of-contents)
+- [:file_folder: Folder Structure](#file_folder-folder-structure)
+- [:gift: Module Bundling](#gift-module-bundling)
+  - [:hammer: Customizing create-react-app](#hammer-customizing-create-react-app)
+- [:traffic_light: Api Services](#api-services)
+- :baby_bottle: Common UI components
+- :electric_plug: Custom Hooks
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### :file_folder: Folder Structure
 
-### `npm run build`
+After creating the project, your folder structure will look like this:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+react-course-repo
+├─ .babelrc
+├─ .env
+├─ .gitignore
+├─ config-overrides.js
+├─ package-lock.json
+├─ package.json
+├─ README.md
+├─ public
+│  ├─ favicon.ico
+│  ├─ index.html
+│  ├─ logo192.png
+│  ├─ logo512.png
+│  ├─ manifest.json
+│  └─ robots.txt
+└─ src
+   ├─ App.css
+   ├─ App.js
+   ├─ App.test.js
+   ├─ index.css
+   ├─ index.js
+   ├─ logo.svg
+   ├─ reportWebVitals.js
+   ├─ setupTests.js
+   ├─ api
+   │  ├─ http
+   │  │  ├─ axiosApi.js
+   │  │  ├─ fetchApi.js
+   │  │  └─ index.js
+   │  └─ services
+   │     ├─ index.js
+   │     └─ task.js
+   ├─ components
+   │  ├─ index.js
+   │  └─ UI
+   │     ├─ Button
+   │     │  ├─ Button.js
+   │     │  └─ Button.module.css
+   │     └─ Card
+   │        ├─ Card.module.css
+   │        └─ index.js
+   ├─ hooks
+   │  ├─ index.js
+   │  ├─ useAxiosApi.jsx
+   │  ├─ useCounter.jsx
+   │  ├─ useFetchApi.jsx
+   │  └─ useInput.jsx
+   └─ state
+      ├─ providers
+      └─ reducers
+         ├─ index.jsx
+         └─ inputStateReducer.jsx
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### :gift: Module Bundling
 
-### `npm run eject`
+In the project, modules are bundled and re-exported in index.js files for utilizing named imports.
+By this way combined with path aliasing, multiple modules can be imported at one statement and its more organized with less code.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+In this example below, multiple custom-hooks components are bundled in index.js so in App.js they are imported with their names in one statement otherwise we would have tow write 4 different import statement in App.js
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+📜App.js
+📦hooks
+ ┣ 📜index.js
+ ┣ 📜useAxiosApi.js
+ ┣ 📜useCounter.js
+ ┣ 📜useFetchApi.js
+ ┗ 📜useInput.js
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```js
+// src/hooks/index.js
+export { default as useCounter } from "./useCounter";
+export { default as useFetchApi } from "./useFetchApi";
+export { default as useAxiosApi } from "./useAxiosApi";
+export { default as useInput } from "./useInput";
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+// src/App.js
+import { useCounter, useFetchApi, useAxiosApi, useInput } from "@hooks";
+```
 
-## Learn More
+#### :hammer: Customizing create-react-app
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To modify webpack and babel configurations without ejecting create-react-app, you need to install these packages `react-app-rewired`, `customize-cra` and `babel-plugin-module-resolver`.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Then the scripts in package.json are modified like this:
 
-### Code Splitting
+```
+...
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+  }
+...
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+After that **.babelrc** and **config-ovverrides.js** files are added to the root of the project and modified like this:
 
-### Analyzing the Bundle Size
+```js
+//config-overrides.js
+const { useBabelRc, override } = require("customize-cra");
+module.exports = override(useBabelRc());
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+//.babelrc
+{
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": ["./src/"],
+        "alias": {
+          "@components": "./src/components/",
+          "@icons": "./src/components/UI/Icons",
+          "@constants": "./src/constants",
+          "@hooks": "./src/hooks",
+          "@http": "./src/api/http",
+          "@services": "./src/api/services",
+          "@reducers": "./src/state/reducers"
+        }
+      }
+    ]
+  ]
+}
+```
 
-### Making a Progressive Web App
+### :traffic_light: Api Services
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+There are two api services implemented as a js class seperately **FetchApi** and **AxiosApi**
+These classes are encapsulating configuration and headers and some data transformation methods.
